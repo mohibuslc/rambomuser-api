@@ -1,23 +1,56 @@
-import logo from './logo.svg';
+
 import './App.css';
+import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
+import {useState} from 'react'
+import {useEffect} from 'react';
+
+
 
 function App() {
+const [likeColor , setLikeColor] = useState('');
+const [user , setUser]= useState([]);
+const [ramdomuser , setramdomUser]= useState({});
+
+
+
+useEffect (()=>{
+
+const url = 'https://jsonplaceholder.typicode.com/users';
+fetch(url)
+.then(res => res.json())
+.then (data => setUser(data))
+
+ // ramdomUser
+
+
+ 
+ fetch('https://randomuser.me/api/')
+ .then(res => res.json())
+ .then(data => setramdomUser(data.results.[0]))
+},[])
+
+const handleClick = () =>{
+
+
+  const color = likeColor ? '' : 'primary';
+  setLikeColor(color)
+}
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{ textAlign: 'center'}}>
+      
+       <h1>{ramdomuser.name && ramdomuser.name.last}</h1> 
+       
+       <h2>{ramdomuser.gender}</h2>
+
+         <ThumbUpAltIcon onClick = {handleClick} color ={likeColor}></ThumbUpAltIcon>
+         {  
+         
+         user.map(pd => <li>{pd.name}</li>)
+         
+         }
+
+     
     </div>
   );
 }
